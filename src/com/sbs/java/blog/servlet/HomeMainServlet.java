@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.sun.corba.se.spi.activation.Repository;
 
-@WebServlet("/home/main")
+@WebServlet("/s/home/main")
 public class HomeMainServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
