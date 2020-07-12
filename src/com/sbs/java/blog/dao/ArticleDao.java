@@ -54,4 +54,18 @@ public class ArticleDao {
 		return count;
 	}
 
+	public Article getForPrintArticle(int id) {
+		String sql = "";
+		
+		sql += String.format("SELECT *, '장희성' AS extra__writer ");
+		sql += String.format("FROM article ");
+		sql += String.format("WHERE 1 ");
+		sql += String.format("AND id = %d ", id);
+		sql += String.format("AND displayStatus = 1 ");
+		
+		System.out.println(sql);
+		
+		return new Article(DBUtil.selectRow(dbConn, sql));
+	}
+
 }
