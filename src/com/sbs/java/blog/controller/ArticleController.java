@@ -36,7 +36,15 @@ public class ArticleController extends Controller{
 			page = Integer.parseInt(req.getParameter("page"));
 		}
 		
-		List<Article> articles = articleService.getForPrintListArticles(page, cateItemId);
+		int itemsInAPage = 10;
+		int totalCount = articleService.getForPrintListArticlesCount(cateItemId);
+		int totalPage = (int) Math.ceil(totalCount / (double) itemsInAPage);
+		
+		req.setAttribute("totalCount", totalCount);
+		req.setAttribute("totalPage", totalPage);
+		req.setAttribute("page", page);
+		
+		List<Article> articles = articleService.getForPrintListArticles(page, itemsInAPage, cateItemId);
 		req.setAttribute("articles", articles);
 		return "article/list";
 	}
