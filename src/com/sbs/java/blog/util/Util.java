@@ -1,7 +1,6 @@
 package com.sbs.java.blog.util;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -61,6 +60,10 @@ public class Util {
 			e1.printStackTrace();
 		}
 		
+	}
+
+	public static String getString(HttpServletRequest req, String paramName) {
+		return req.getParameter(paramName);
 	}
 	
 }
