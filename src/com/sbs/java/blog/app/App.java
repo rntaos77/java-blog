@@ -13,6 +13,7 @@ import com.sbs.java.blog.controller.ArticleController;
 import com.sbs.java.blog.controller.Controller;
 import com.sbs.java.blog.controller.HomeController;
 import com.sbs.java.blog.controller.MemberController;
+import com.sbs.java.blog.exception.SQLErrorException;
 import com.sbs.java.blog.util.Util;
 
 public class App {
@@ -55,7 +56,10 @@ public class App {
 		
 		} catch (SQLException e) {
 			Util.printEx("SQL 예외(커넥션 열기)", resp, e);
-		} catch (Exception e) {
+		} catch(SQLErrorException e) {
+			Util.printEx(e.getMessage(), resp, e);
+		}
+		catch (Exception e) {
 			Util.printEx("기타 예외", resp, e);
 		} finally {
 			if (dbConn != null) {
@@ -100,7 +104,7 @@ public class App {
 				String viewPath = "/jsp/" + actionResult;
 				req.getRequestDispatcher(viewPath).forward(req, resp);
 			} else if(actionResult.startsWith("html:")) {
-				resp.getWriter().append(actionResult.substring(6));
+				resp.getWriter().append(actionResult.substring(5));
 			} else {
 				resp.getWriter().append("처리할 수 없는 액션결과입니다.");
 			}
