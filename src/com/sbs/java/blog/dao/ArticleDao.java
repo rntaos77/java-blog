@@ -12,7 +12,6 @@ import com.sbs.java.blog.util.DBUtil;
 public class ArticleDao extends Dao {
 
 	private Connection dbConn;
-	private DBUtil dbUtil;
 
 	public ArticleDao(Connection dbConn) {
 
@@ -102,5 +101,19 @@ public class ArticleDao extends Dao {
 		sql += String.format("AND id = %d ", cateItemId);
 		
 		return new CateItem(DBUtil.selectRow(dbConn, sql));
+	}
+
+	public int write(int cateItemId, String title, String body) {
+		String sql = "";
+		
+		sql += String.format("INSERT INTO article ");
+		sql += String.format("SET regDate = NOW() ");
+		sql += String.format(", updateDate = NOW() ");
+		sql += String.format(", title = '%s' ", title);
+		sql += String.format(", body = '%s' ", body);
+		sql += String.format(", displayStatus = '1' ");
+		sql += String.format(", cateItemId = '%d' ", cateItemId);
+		
+		return DBUtil.insert(dbConn, sql);
 	}
 }
