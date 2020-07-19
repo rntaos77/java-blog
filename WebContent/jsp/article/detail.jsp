@@ -48,10 +48,10 @@
 		이모지 테스트 : 😀😁
 	</div>
 
-	<script type="text/x-template" id="origin1" style="display: none;"><%=article.getBody()%></script>
+	<script type="text/x-template" id="origin1" style="display: none;"><%=article.getBodyForXTemplate()%></script>
 	<div id="viewer1"></div>
 	<script>
-		var editor1__initialValue = $('#origin1').html().trim();
+		var editor1__initialValue = getBodyFormXTemplate('#origin1');
 		var editor1 = new toastui.Editor({
 			el : document.querySelector('#viewer1'),
 			

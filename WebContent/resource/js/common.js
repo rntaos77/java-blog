@@ -212,6 +212,10 @@ function getUrlParams(url) {
 }
 // lib 끝
 
+function getBodyFromXTemplate(selector){
+	return $(selector).html().trim().replace(/<!--REPLACE:script-->/gi, 'script');
+}
+
 $(function() {
   MobileSideBar__init();
 });
