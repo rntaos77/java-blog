@@ -43,7 +43,7 @@
 
 <div class="con">
 	<h1><%=article.getTitle()%></h1>
-
+	<h3>조회 : <%=article.getHit()%></h3>
 	<div>
 		이모지 테스트 : 😀😁
 	</div>
