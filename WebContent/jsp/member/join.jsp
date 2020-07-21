@@ -6,7 +6,7 @@
 <style>
 
 /* cus */
-.write-form-box {
+.join-form-box {
 	margin-top: 30px;
 }
 </style>
