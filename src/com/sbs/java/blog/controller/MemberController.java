@@ -26,9 +26,16 @@ public class MemberController extends Controller {
 			return doActionLogin();
 		case "doLogin":
 			return doActionDoLogin();
+		case "doLogout":
+			return doActionDoLogout();
 		}
 		
 		return "";
+	}
+
+	private String doActionDoLogout() {
+		session.removeAttribute("loginedMemberId");
+		return String.format("html:<script> alert('로그아웃 되었습니다.'); location.replace('../home/main'); </script>");
 	}
 
 	private String doActionDoLogin() {
@@ -41,7 +48,6 @@ public class MemberController extends Controller {
 			return String.format("html:<script> alert('일치하는 정보가 없습니다.'); history.back(); </script>");
 		}
 		
-		HttpSession session = req.getSession();
 		session.setAttribute("loginedMemberId", loginedMemberId);
 		
 		return String.format("html:<script> alert('로그인 되었습니다.'); location.replace('../home/main'); </script>");
@@ -83,6 +89,11 @@ public class MemberController extends Controller {
 
 	private String doActionJoin() {
 		return "member/join.jsp";
+	}
+
+	@Override
+	public String getControllerName() {
+		return "member";
 	}
 
 }

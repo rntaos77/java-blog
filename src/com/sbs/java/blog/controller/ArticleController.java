@@ -116,4 +116,9 @@ public class ArticleController extends Controller {
 		return "article/list.jsp";
 	}
 
+	@Override
+	public String getControllerName() {
+		return "article";
+	}
+
 }

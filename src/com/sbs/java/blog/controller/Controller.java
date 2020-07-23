@@ -32,6 +32,8 @@ public abstract class Controller {
 		memberService = new MemberService(dbConn);
 	}
 	
+	public abstract String getControllerName();
+	
 	public void beforeAction() {
 		List<CateItem> cateItems = articleService.getForPrintCateItems();
 		
@@ -60,9 +62,70 @@ public abstract class Controller {
 	
 	public String executeAction() {
 		beforeAction();
+		
+		String doGuardRs = doGuard();
+		
+		if(doGuardRs != null) {
+			return doGuardRs;
+		}
+		
+	
 		String rs = doAction();
 		afterAction();
 		
 		return rs;
+	}
+
+	private String doGuard() {
+		boolean isLogined = (boolean) req.getAttribute("isLogined");
+		
+		boolean needToLogin = false;
+		
+		String controllerName = getControllerName();
+		
+		switch(controllerName) {
+		case "member":
+			switch(actionMethodName) {
+			case "doLogout":
+				needToLogin = true;
+				break;
+			}
+			break;
+		case "article":
+			switch(actionMethodName) {
+			case "write":
+			case "doWrite":
+			case "modify":
+			case "doModify":
+			case "doDelete":
+				needToLogin = true;
+				break;
+			}
+			break;
+		}
+		
+		if(needToLogin && isLogined == false) {
+			return "html:<script> alert('로그인 후 이용해주세요.'); location.href = '../member/login'; </script>";
+		}
+		
+		boolean needToLogout = false;
+		
+		switch(controllerName) {
+		case "member":
+			switch(actionMethodName) {
+			case "login":
+			case "join":
+				needToLogout = true;
+				break;
+			}
+			break;
+		
+		}
+		
+		if(needToLogout && isLogined) {
+			return "html:<script> alert('로그아웃 후 이용해주세요.'); history.back(); </script>";
+		}
+		
+		return null;
 	}
 }

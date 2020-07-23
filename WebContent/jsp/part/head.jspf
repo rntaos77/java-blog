@@ -9,6 +9,7 @@
 	Member loginedMember = (Member) request.getAttribute("loginedMember");
 	boolean isLogined = (boolean) request.getAttribute("isLogined");
 %>
+
 <!DOCTYPE html>
 <html lang="ko">
 
@@ -41,6 +42,7 @@
 
 <%="<style>.form1 .form-row:not(:first-child) { margin-top : 10px; }</style>"%>
 
+
 <title>최원혁 블로그</title>
 <script>
 	var loginedMemberId = parseInt("${loginedMemberId}");
@@ -62,6 +64,7 @@
 <%
 	}
 %>
+
 </head>
 
 <body>
@@ -76,11 +79,20 @@
 	<div class="mobile-side-bar flex flex-ai-c visible-on-sm-down">
 		<nav class="menu-box-1 flex-grow-1">
 			<ul>
+				<% if ( isLogined ) { %>
+				<li><a href="${pageContext.request.contextPath}/s/member/doLogout"
+					class="block">Logout</a></li>
+				<% } else { %>
+				<li><a href="${pageContext.request.contextPath}/s/member/login"
+					class="block">Login</a></li>
+				<li><a href="${pageContext.request.contextPath}/s/member/join"
+					class="block">Join</a></li>
+				<% } %>
 				<li><a href="${pageContext.request.contextPath}/s/home/main"
 					class="block">Home</a></li>
-				<li><a href="${pageContext.request.contextPath}/s/article/write"
+				<li><a
+					href="${pageContext.request.contextPath}/s/article/write"
 					class="block">Write</a></li>
-
 				<li><a href="#" class="block">Articles</a>
 					<ul>
 						<li><a
@@ -116,10 +128,22 @@
 
 			<nav class="menu-box-1">
 				<ul class="flex height-100p">
+					<% if ( isLogined ) { %>
+					<li><a href="${pageContext.request.contextPath}/s/member/doLogout"
+						class="flex height-100p flex-ai-c">Logout</a></li>
+					<% } else { %>
+					<li><a href="${pageContext.request.contextPath}/s/member/login"
+						class="flex height-100p flex-ai-c">Login</a></li>
+					<li><a href="${pageContext.request.contextPath}/s/member/join"
+						class="flex height-100p flex-ai-c">Join</a></li>
+					<% } %>
 					<li><a href="${pageContext.request.contextPath}/s/home/main"
 						class="flex height-100p flex-ai-c">Home</a></li>
-					<li><a href="${pageContext.request.contextPath}/s/article/write"
+					<li><a
+						href="${pageContext.request.contextPath}/s/article/write"
 						class="flex height-100p flex-ai-c">Write</a></li>
+
+
 					<li><a
 						href="${pageContext.request.contextPath}/s/article/list"
 						class="flex height-100p flex-ai-c">Articles</a>
@@ -149,9 +173,10 @@
 		</div>
 	</div>
 	<%
-		if(loginedMember != null){
+		if (loginedMember != null) {
 	%>
-	<div class="con"><%=loginedMember.getName() %>번 회원님 환영합니다.</div>
+	<div class="con"><%=loginedMember.getName()%>번 회원님 환영합니다.
+	</div>
 	<%
 		}
 	%>

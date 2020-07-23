@@ -1,21 +1,20 @@
 console.clear();
 
 function MobileSideBar__init() {
-  $('.mobile-top-bar .btn-toggle-mobile-side-bar').click(function() {
-    var $this = $(this);
-    
-    if ( $this.hasClass('active') ) {
-      $this.removeClass('active');
-      $('.mobile-side-bar').removeClass('active');
-    }
-    else {
-      $this.addClass('active')
-      $('.mobile-side-bar').addClass('active');
-    }
-  });
+	$('.mobile-top-bar .btn-toggle-mobile-side-bar').click(function() {
+		var $this = $(this);
+
+		if ($this.hasClass('active')) {
+			$this.removeClass('active');
+			$('.mobile-side-bar').removeClass('active');
+		} else {
+			$this.addClass('active')
+			$('.mobile-side-bar').addClass('active');
+		}
+	});
 }
 
-//유튜브 플러그인 시작
+// 유튜브 플러그인 시작
 function youtubePlugin() {
 	toastui.Editor.codeBlockManager.setReplacer("youtube", function(youtubeId) {
 		// Indentify multiple code blocks
@@ -212,10 +211,10 @@ function getUrlParams(url) {
 }
 // lib 끝
 
-function getBodyFromXTemplate(selector){
+function getBodyFromXTemplate(selector) {
 	return $(selector).html().trim().replace(/<!--REPLACE:script-->/gi, 'script');
 }
 
 $(function() {
-  MobileSideBar__init();
+	MobileSideBar__init();
 });
