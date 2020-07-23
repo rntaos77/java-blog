@@ -104,7 +104,7 @@ public class ArticleDao extends Dao {
 		return new CateItem(DBUtil.selectRow(dbConn, sql));
 	}
 
-	public int write(int cateItemId, String title, String body) {
+	public int write(int cateItemId, String title, String body, int memberId) {
 		SecSql sql = new SecSql();
 		
 		sql.append("INSERT INTO article");
@@ -114,6 +114,7 @@ public class ArticleDao extends Dao {
 		sql.append(", body = ? ", body);
 		sql.append(", displayStatus = '1'");
 		sql.append(", cateItemId = ?", cateItemId);
+		sql.append(", memberId = ?", memberId);
 		
 		return DBUtil.insert(dbConn, sql);
 	}
