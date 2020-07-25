@@ -41,25 +41,56 @@
 <link rel="stylesheet"
 	href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
 
-<div class="con">
-	<h1><%=article.getTitle()%></h1>
-	<h3>조회 : <%=article.getHit()%></h3>
-	<div>
-		이모지 테스트 : 😀😁
-	</div>
+<div class="con table-box">
+	<table>
+		<colgroup>
+			<col width="200">
+		</colgroup>
 
-	<script type="text/x-template" id="origin1" style="display: none;"><%=article.getBodyForXTemplate()%></script>
-	<div id="viewer1"></div>
-	<script>
-		var editor1__initialValue = getBodyFormXTemplate('#origin1');
-		var editor1 = new toastui.Editor({
-			el : document.querySelector('#viewer1'),
-			
-			initialValue : editor1__initialValue,
-			viewer : true,
-			plugins : [ toastui.Editor.plugin.codeSyntaxHighlight, youtubePlugin, replPlugin, codepenPlugin ]
-		});
-	</script>
+		<tbody>
+			<tr>
+				<th>번호</th>
+				<td><%=article.getId()%></td>
+			</tr>
+			<tr>
+				<th>날짜</th>
+				<td><%=article.getRegDate()%></td>
+			</tr>
+			<tr>
+				<th>제목</th>
+				<td><%=article.getTitle()%></td>
+			</tr>
+			<tr>
+				<th>조회</th>
+				<td><%=article.getHit()%></td>
+			</tr>
+			<tr>
+				<th>비고</th>
+				<td>
+					<div class="inline-block">
+						<%
+							if ((boolean) article.getExtra().get("deleteAvailable")) {
+						%>
+						<a onclick="if ( confirm('삭제하시겠습니까?') == false ) return false;"
+							href="./doDelete?id=<%=article.getId()%>">삭제</a>
+						<%
+							}
+						%>
+					</div>
+					<div class="inline-block">
+						<%
+							if ((boolean) article.getExtra().get("modifyAvailable")) {
+						%>
+						<a onclick="if ( confirm('수정하시겠습니까?') == false ) return false;"
+							href="./modify?id=<%=article.getId()%>">수정</a>
+						<%
+							}
+						%>
+					</div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
 </div>
 
 

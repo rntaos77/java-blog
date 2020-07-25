@@ -2,6 +2,7 @@ package com.sbs.java.blog.controller;
 
 import java.sql.Connection;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,13 +31,36 @@ public class ArticleController extends Controller {
 			return doActionDetail();
 		case "doWrite":
 			return doActionDoWrite();
-		
+		case "doDelete":
+			return doActionDodelete();
 		case "write":
 			return doActionWrite();
 		}
 		
 		return"";
 	}
+	private String doActionDodelete() {
+		if(Util.empty(req, "id")) {
+			return "html:id를 입력해주세요.";
+		}
+		if(Util.isNum(req, "id") == false) {
+			return "html:id를 정수로 입력해주세요.";
+		}
+		int id = Util.getInt(req, "id");
+		
+		int loginedMemberId = (int) req.getAttribute("loginedMemberId");
+		System.out.println(loginedMemberId);
+		
+		Map<String, Object> getCheckRsDeleteAvailableRs = articleService.getCheckRsDeleteAvailable(id, loginedMemberId);
+		
+		if(Util.isSuccess(getCheckRsDeleteAvailableRs) == false) {
+			return "html:<script> alert('" + getCheckRsDeleteAvailableRs.get("msg") + "'); history.back(); </script>";
+		}
+		articleService.deleteArticle(id);
+		
+		return "html:<script> alert('" + id + "번 게시물이 삭제되었습니다.'); location.replace('list'); </script>";
+	}
+
 	private String doActionWrite() {
 		return "article/write.jsp";
 	}
@@ -65,8 +89,9 @@ public class ArticleController extends Controller {
 		int id = Util.getInt(req, "id");
 		
 		articleService.increaseHit(id);
-
-		Article article = articleService.getForPrintArticle(id);
+		
+		int loginedMemberId = (int) req.getAttribute("loginedMemberId");
+		Article article = articleService.getForPrintArticle(id, loginedMemberId);
 
 		req.setAttribute("article", article);
 
@@ -111,8 +136,9 @@ public class ArticleController extends Controller {
 		req.setAttribute("totalCount", totalCount);
 		req.setAttribute("totalPage", totalPage);
 		req.setAttribute("page", page);
-
-		List<Article> articles = articleService.getForPrintListArticles(page, itemsInAPage, cateItemId,
+		
+		int loginedMemberId = (int) req.getAttribute("loginedMemberId");
+		List<Article> articles = articleService.getForPrintListArticles(loginedMemberId, page, itemsInAPage, cateItemId,
 				searchKeywordType, searchKeyword);
 		req.setAttribute("articles", articles);
 		return "article/list.jsp";

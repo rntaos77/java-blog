@@ -175,4 +175,8 @@ public class DBUtil {
 		return affectedRows;
 	}
 
+	public static int delete(Connection dbConn, SecSql sql) {
+		return update(dbConn, sql);
+	}
+
 }

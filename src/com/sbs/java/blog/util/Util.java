@@ -3,6 +3,7 @@ package com.sbs.java.blog.util;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -84,6 +85,10 @@ public class Util {
 		} catch(UnsupportedEncodingException e) {
 			return str;
 		}
+	}
+
+	public static boolean isSuccess(Map<String, Object> rs) {
+		return ((String) rs.get("resultCode")).startsWith("S-1");
 	}
 	
 }
