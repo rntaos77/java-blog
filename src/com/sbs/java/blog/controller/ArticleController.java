@@ -27,6 +27,8 @@ public class ArticleController extends Controller {
 		switch (actionMethodName) {
 		case "list":
 			return doActionList();
+		case "modify":
+			return doActionModify();
 		case "detail":
 			return doActionDetail();
 		case "doWrite":
@@ -39,6 +41,25 @@ public class ArticleController extends Controller {
 		
 		return"";
 	}
+	private String doActionModify() {
+		if(Util.empty(req, "id")) {
+			return "html:id를 입력해주세요.";
+		}
+		if(Util.isNum(req, "id") == false) {
+			return "html:id를 정수로 입력해주세요.";
+		}
+		int id = Util.getInt(req, "id");
+		
+		articleService.increaseHit(id);
+		
+		int loginedMemberId = (int)req.getAttribute("loginedMemberId");
+		Article article = articleService.getForPrintArticle(id, loginedMemberId);
+		
+		req.setAttribute("article", article);
+		
+		return "article/modify.jsp";
+	}
+
 	private String doActionDodelete() {
 		if(Util.empty(req, "id")) {
 			return "html:id를 입력해주세요.";
