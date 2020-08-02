@@ -9,18 +9,20 @@
 	margin-top: 30px;
 }
 </style>
-
+<div class="con">
+	<h1>게시물 작성</h1>
+</div>
 <script>
 	var submitWriteFormDone = false;
 
-	function submitWriteForm(form){
-		if(submitWriteFormDone){
+	function submitWriteForm(form) {
+		if (submitWriteFormDone) {
 			alert('처리중입니다.');
 			return;
 		}
 		form.title.value = form.title.value.trim();
 
-		if(form.title.value.length == 0){
+		if (form.title.value.length == 0) {
 			alert('제목을 입력해주세요.');
 			form.title.focus();
 
@@ -32,7 +34,7 @@
 		var body = editor.getMarkdown();
 		body = body.trim();
 
-		if(body.length == 0){
+		if (body.length == 0) {
 			alert('내용을 입력해주세요.');
 			editor.focus();
 
@@ -46,19 +48,16 @@
 </script>
 
 <div class="write-form-box con">
-	<form action="doWrite" method="POST" class="write-form form1" onsubmit="submitWriteForm(this); return false;">
-		<input type="hidden" name="body"/>
+	<form action="doWrite" method="POST" class="write-form form1"
+		onsubmit="submitWriteForm(this); return false;">
+		<input type="hidden" name="body" />
 		<div class="form-row">
 			<div class="label">카테고리 선택</div>
 			<div class="input">
 				<select name="cateItemId">
-					<%
-						for (CateItem cateItem : cateItems) {
-					%>
-					<option value="<%=cateItem.getId()%>"><%=cateItem.getName()%></option>
-					<%
-						}
-					%>
+					<c:forEach items="${cateItems}" var="cateItem">
+						<option value="${cateItem.id}">${cateItem.name}</option>
+					</c:forEach>
 
 				</select>
 			</div>
@@ -77,12 +76,12 @@
 			</div>
 		</div>
 		<div class="form-row">
-			<div class="label">전송</div>
+			<div class="label">작성</div>
 			<div class="input">
-				<input type="submit" value="전송" /> <a href="list">취소</a>
+				<input type="submit" value="작성" /> <a href="list">취소</a>
 			</div>
 		</div>
 	</form>
 </div>
 
-<%@ include file="/jsp/part/foot.jspf"%> 
+<%@ include file="/jsp/part/foot.jspf"%>
