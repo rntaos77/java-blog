@@ -52,7 +52,8 @@
 <c:if test="${isLogined == false}">
 	<div class="con">
 		<c:url value="/s/member/login" var="loginUrl">
-			<c:param name="afterLoginRedirectUrl" value="${currentUrl}&jsAction=WriteReplyForm__focus" />
+			<c:param name="afterLoginRedirectUrl"
+				value="${currentUrl}&jsAction=WriteReplyForm__focus" />
 		</c:url>
 		<a href="${loginUrl}">로그인</a> 후 이용해주세요.
 	</div>
@@ -61,23 +62,25 @@
 	<script>
 		var WriteReplyForm__submitDone = false;
 
-		function WriteReplyForm__focus(){
-			var editor = $('.write-reply-form .toast-editor').data('data-toast-editor');
+		function WriteReplyForm__focus() {
+			var editor = $('.write-reply-form .toast-editor').data(
+					'data-toast-editor');
 			editor.focus();
 		}
 
-		function WriteReplyForm__submit(form){
-			if(WriteReplyForm__submitDone){
+		function WriteReplyForm__submit(form) {
+			if (WriteReplyForm__submitDone) {
 				alert('처리중입니다.');
 				return;
 			}
 
-			var editor = $(form).find('.toast-editor').data('data-toast-editor');
+			var editor = $(form).find('.toast-editor')
+					.data('data-toast-editor');
 
 			var body = editor.getMarkdown();
 			body = body.trim();
 
-			if(body.length == 0){
+			if (body.length == 0) {
 				alert('내용을 입력해주세요.');
 				editor.focus();
 
@@ -90,24 +93,25 @@
 			WriteReplyForm__submitDone = true;
 		}
 
-		function WriteReplyForm__init(){
+		function WriteReplyForm__init() {
 			$('.write-reply-form .cancel').click(
-				function(){
-					var editor = $('.write-reply-form .toast-editor').data('data-toast-editor');
-					editor.setMarkdown('');
-				});
-			
+					function() {
+						var editor = $('.write-reply-form .toast-editor').data(
+								'data-toast-editor');
+						editor.setMarkdown('');
+					});
+
 		}
 
-		$(function(){
+		$(function() {
 			WriteReplyForm__init();
 		});
-			
-		
 	</script>
 	<div class="write-reply-form-box con">
-		<form action="doWriteReply" method="POST" class="write-reply-form form1" onsubmit="WriteReplyForm__submit(this); return false;">
-			<input type="hidden" name="articleId" value="${article.id}"/>
+		<form action="doWriteReply" method="POST"
+			class="write-reply-form form1"
+			onsubmit="WriteReplyForm__submit(this); return false;">
+			<input type="hidden" name="articleId" value="${article.id}" />
 			<c:url value="${noBaseCurrentUri}" var="redirectUrl">
 				<c:forEach items="${paramValues}" var="p">
 					<c:choose>
@@ -119,11 +123,11 @@
 						</c:otherwise>
 					</c:choose>
 				</c:forEach>
-				
+
 				<c:param name="jsAction" value="WriteReplyList__showTop" />
 			</c:url>
-			<input type="hidden" name="redirectUrl" value="${redirectUrl}"/>
-			<input type="hidden" name="body"/>
+			<input type="hidden" name="redirectUrl" value="${redirectUrl}" /> <input
+				type="hidden" name="body" />
 			<div class="form-row">
 				<div class="label">내용</div>
 				<div class="input">
@@ -134,11 +138,75 @@
 			<div class="form-row">
 				<div class="label">작성</div>
 				<div class="input flex">
-					<input type="submit" value="작성"/> <input class="cancel" type="button" value="취소"/>
+					<input type="submit" value="작성" /> <input class="cancel"
+						type="button" value="취소" />
 				</div>
 			</div>
 		</form>
 	</div>
 </c:if>
+
+<script>
+	function WriteReplyList__showTop() {
+		var top = $('.article-replies-list-box').offset().top;
+		$(window).scrollTop(top);
+
+		var $firstTr = $('.article-replies-list-box > table > tbody > tr:first-child');
+
+		$firstTr.addClass('high');
+		setTimeout(function() {
+			$firstTr.removeClass('high');
+		}, 1000);
+	}
+</script>
+
+<style>
+.article-replies-list-box>table>tbody>tr.high {
+	background-color: #dfdfdf;
+}
+
+.article-replies-list-box>table>tbody>tr {
+	transition: background-color 1s;
+}
+</style>
+
+<h2 class="con">댓글 리스트</h2>
+
+<div class="con article-replies-list-box table-box">
+	<table>
+		<colgroup>
+			<col width="100" />
+			<col width="200" />
+			<col />
+			<col width="120" />
+		</colgroup>
+		<thead>
+			<tr>
+				<th>번호</th>
+				<th>날짜</th>
+				<th>내용</th>
+				<th>비고</th>
+			</tr>
+		</thead>
+		<tbody>
+			<c:forEach items="${articleReplies}" var="articleReply">
+				<tr>
+					<td class="text-align-center">${articleReply.id}</td>
+					<td class="text-align-center">${articleReply.regDate}</td>
+					<td class="padding-left-10 padding-right-10"><script
+							type="text/x-template">${articleReply.bodyForXTemplate}</script>
+						<div class="toast-editor toast-editor-viewer"></div></td>
+					<td class="text-align-center"><c:if
+							test="${articleReply.extra.deleteAvailable}">
+							<a onclick="if ( confirm('삭제하시겠습니까?') == false ) return false;"
+								href="./doDeleteReply?id=${articleReply.id}">삭제</a>
+						</c:if> <c:if test="${articleReply.extra.modifyAvailable}">
+							<a href="./modifyReply?id=${articleReply.id}">수정</a>
+						</c:if></td>
+				</tr>
+			</c:forEach>
+		</tbody>
+	</table>
+</div>
 
 <%@ include file="/jsp/part/foot.jspf"%>
