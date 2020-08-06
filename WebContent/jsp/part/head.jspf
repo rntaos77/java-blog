@@ -1,3 +1,6 @@
+<%@ page import="java.util.List"%>
+<%@ page import="com.sbs.java.blog.dto.CateItem"%>
+<%@ page import="com.sbs.java.blog.dto.Member"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -42,6 +45,7 @@
 	var loginedMember = null;
 </script>
 
+
 <script>
 	var param = {};
 </script>
@@ -52,27 +56,28 @@
 </c:forEach>
 
 <script>
-	if (!param.jsAction) {
-		param.jsAction = '';
-	}
+if ( !param.jsAction ) {
+	param.jsAction = '';
+}
 
-	var jsActions = param.jsAction.split(',');
+var jsActions = param.jsAction.split(',');
 
-	for ( var key in jsActions) {
-		var jsActionFuncName = jsActions[key];
+for ( var key in jsActions ) {
+	var jsActionFuncName = jsActions[key];
 
-		$(function() {
-			setTimeout(function() {
-				if (window[jsActionFuncName]) {
-					window[jsActionFuncName]();
-				} else {
-					console.error("jsAction으로 요청받은, " + jsActionFuncName
-							+ " 함수는 존재하지 않아서 실행하지 못했습니다.");
-				}
-			}, 100);
-		});
-	}
+	$(function() {
+		setTimeout(function() {
+			if ( window[jsActionFuncName] ) {
+				window[jsActionFuncName]();
+			}
+			else {
+				console.error("jsAction으로 요청받은, " + jsActionFuncName + " 함수는 존재하지 않아서 실행하지 못했습니다.");
+			}
+		}, 100);
+	});
+}
 </script>
+
 <c:if test="${isLogined}">
 	<script>
 		loginedMember = {};
@@ -84,6 +89,7 @@
 		loginedMember["email"] = "${loginedMember.email}";
 	</script>
 </c:if>
+
 </head>
 
 <body>
@@ -100,12 +106,12 @@
 			<ul>
 				<c:if test="${isLogined}">
 					<li><a
-						href="${pageContext.request.contextPath}/s/member/doLogout?redirectUrl==${urlEncodedAfterLogoutRedirectUrl}"
+						href="${pageContext.request.contextPath}/s/member/doLogout?redirectUri=${encodedAfterLogoutRedirectUri}"
 						class="block">Logout</a></li>
 				</c:if>
 				<c:if test="${isLogined == false}">
 					<li><a
-						href="${pageContext.request.contextPath}/s/member/login?afterLoginRedirectUrl=${urlEncodedAfterLoginRedirectUrl}"
+						href="${pageContext.request.contextPath}/s/member/login?afterLoginRedirectUri=${encodedAfterLoginRedirectUri}"
 						class="block">Login</a></li>
 					<li><a href="${pageContext.request.contextPath}/s/member/join"
 						class="block">Join</a></li>
@@ -148,12 +154,12 @@
 				<ul class="flex height-100p">
 					<c:if test="${isLogined}">
 						<li><a
-							href="${pageContext.request.contextPath}/s/member/doLogout?redirectUrl=${urlEncodedAfterLogoutRedirectUrl}"
+							href="${pageContext.request.contextPath}/s/member/doLogout?redirectUri=${encodedAfterLogoutRedirectUri}"
 							class="flex height-100p flex-ai-c">Logout</a></li>
 					</c:if>
 					<c:if test="${isLogined == false}">
 						<li><a
-							href="${pageContext.request.contextPath}/s/member/login?afterLoginRedirectUrl=${urlEncodedAfterLoginRedirectUrl}"
+							href="${pageContext.request.contextPath}/s/member/login?afterLoginRedirectUri=${encodedAfterLoginRedirectUri}"
 							class="flex height-100p flex-ai-c">Login</a></li>
 						<li><a
 							href="${pageContext.request.contextPath}/s/member/join"
@@ -164,7 +170,6 @@
 					<li><a
 						href="${pageContext.request.contextPath}/s/article/write"
 						class="flex height-100p flex-ai-c">Write</a></li>
-
 
 					<li><a
 						href="${pageContext.request.contextPath}/s/article/list"
@@ -191,9 +196,7 @@
 		</div>
 	</div>
 	<c:if test="${isLogined}">
-		<div class="con">
-			<span>${loginedMember.name}</span>번 회원님 환영합니다.
-		</div>
+		<div class="con">${loginedMember.name}번회원님환영합니다.</div>
 	</c:if>
 	<div class="con page-title">
 		<h1>${pageTitle}</h1>
