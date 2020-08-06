@@ -88,7 +88,20 @@ public class Util {
 	}
 
 	public static boolean isSuccess(Map<String, Object> rs) {
-		return ((String) rs.get("resultCode")).startsWith("S-1");
+		return ((String) rs.get("resultCode")).startsWith("S-");
+	}
+
+	public static String adParamFrom(String redirectUrl, String paramName, int paramValue) {
+		return adParamFrom(redirectUrl, paramName, paramValue + "");
+	}
+
+	private static String adParamFrom(String redirectUrl, String paramName, String paramValue) {
+		if(redirectUrl.contains("?") == false) {
+			redirectUrl += "?dummy=dummy";
+		}
+		redirectUrl += "&" + paramName + "=" + paramValue;
+		
+		return redirectUrl;
 	}
 	
 }
