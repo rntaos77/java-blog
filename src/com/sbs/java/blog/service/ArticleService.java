@@ -150,4 +150,16 @@ public class ArticleService extends Service {
 		
 		return rs;
 	}
+	public Map<String, Object> getReplyCheckRsDeleteAvailable(int id, int actorId) {
+		ArticleReply articleReply = this.getArticleReply(id);
+
+		return getReplyCheckRsDeleteAvailable(articleReply, actorId);
+	}
+
+	private ArticleReply getArticleReply(int id) {
+		return articleDao.getArticleReply(id);
+	}
+	public int deleteArticleReply(int id) {
+		return articleDao.deleteArticleReply(id);
+	}
 }

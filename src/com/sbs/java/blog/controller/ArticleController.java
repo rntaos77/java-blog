@@ -36,6 +36,8 @@ public class ArticleController extends Controller {
 			return doActionDoWrite();
 		case "doWriteReply":
 			return doActionDoWriteReply();
+		case "doDeleteReply":
+			return doActionDoDeleteReply();
 		case "doDelete":
 			return doActionDodelete();
 		case "doModify":
@@ -46,6 +48,32 @@ public class ArticleController extends Controller {
 		
 		return"";
 	}
+	private String doActionDoDeleteReply() {
+		if (Util.empty(req, "id")) {
+			return "html:id를 입력해주세요.";
+		}
+
+		if (Util.isNum(req, "id") == false) {
+			return "html:id를 정수로 입력해주세요.";
+		}
+
+		int id = Util.getInt(req, "id");
+
+		int loginedMemberId = (int) req.getAttribute("loginedMemberId");
+
+		Map<String, Object> getReplyCheckRsDeleteAvailableRs = articleService.getReplyCheckRsDeleteAvailable(id, loginedMemberId);
+
+		if (Util.isSuccess(getReplyCheckRsDeleteAvailableRs) == false) {
+			return "html:<script> alert('" + getReplyCheckRsDeleteAvailableRs.get("msg") + "'); history.back(); </script>";
+		}
+
+		articleService.deleteArticleReply(id);
+
+		String redirectUrl = Util.getString(req, "redirectUrl", "list");
+
+		return "html:<script> alert('" + id + "번 댓글이 삭제되었습니다.'); location.replace('" + redirectUrl + "'); </script>";
+	}
+
 	private String doActionDoWriteReply() {
 		if(Util.empty(req, "articleId")) {
 			return "html:articleId를 입력해주세요.";
@@ -61,7 +89,7 @@ public class ArticleController extends Controller {
 		
 		int id = articleService.writeArticleReply(articleId, loginedMemberId, body);
 		
-		redirectUrl = Util.adParamFrom(redirectUrl, "generatedArticleReplyId", id);
+		redirectUrl = Util.getNewUrl(redirectUrl, "generatedArticleReplyId", id + "");
 		
 		return "html:<script> alert('" + id + "번 댓글이 작성되었습니다.'); location.replace('" + redirectUrl + "'); </script>";
 	}
@@ -120,7 +148,6 @@ public class ArticleController extends Controller {
 		int id = Util.getInt(req, "id");
 		
 		int loginedMemberId = (int) req.getAttribute("loginedMemberId");
-		System.out.println(loginedMemberId);
 		
 		Map<String, Object> getCheckRsDeleteAvailableRs = articleService.getCheckRsDeleteAvailable(id, loginedMemberId);
 		

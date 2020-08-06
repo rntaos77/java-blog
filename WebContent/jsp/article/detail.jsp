@@ -1,10 +1,10 @@
+<%@ page import="com.sbs.java.blog.util.Util"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <c:set var="pageTitle" value="게시물 상세내용"></c:set>
 <%@ include file="/jsp/part/head.jspf"%>
 <%@ include file="/jsp/part/toastUiEditor.jspf"%>
-
 
 <div class="con table-box">
 	<table>
@@ -50,6 +50,7 @@
 
 <c:if test="${isLogined == false}">
 	<div class="con">
+
 		<c:url value="/s/member/login" var="loginUrl">
 			<c:param name="afterLoginRedirectUrl"
 				value="${currentUrl}&jsAction=WriteReplyForm__focus" />
@@ -60,38 +61,29 @@
 <c:if test="${isLogined}">
 	<script>
 		var WriteReplyForm__submitDone = false;
-
 		function WriteReplyForm__focus() {
 			var editor = $('.write-reply-form .toast-editor').data(
 					'data-toast-editor');
 			editor.focus();
 		}
-
 		function WriteReplyForm__submit(form) {
 			if (WriteReplyForm__submitDone) {
 				alert('처리중입니다.');
 				return;
 			}
-
 			var editor = $(form).find('.toast-editor')
 					.data('data-toast-editor');
-
 			var body = editor.getMarkdown();
 			body = body.trim();
-
 			if (body.length == 0) {
 				alert('내용을 입력해주세요.');
 				editor.focus();
-
 				return false;
 			}
-
 			form.body.value = body;
-
 			form.submit();
 			WriteReplyForm__submitDone = true;
 		}
-
 		function WriteReplyForm__init() {
 			$('.write-reply-form .cancel').click(
 					function() {
@@ -99,34 +91,25 @@
 								'data-toast-editor');
 						editor.setMarkdown('');
 					});
-
 		}
-
 		$(function() {
 			WriteReplyForm__init();
 		});
 	</script>
+
 	<div class="write-reply-form-box con">
 		<form action="doWriteReply" method="POST"
 			class="write-reply-form form1"
 			onsubmit="WriteReplyForm__submit(this); return false;">
-			<input type="hidden" name="articleId" value="${article.id}" />
-			<c:url value="${noBaseCurrentUri}" var="redirectUrl">
-				<c:forEach items="${paramValues}" var="p">
-					<c:choose>
-						<c:when test="${p.key == 'jsAction'}"></c:when>
-						<c:otherwise>
-							<c:forEach items="${p.value}" var="val">
-								<c:param name="${p.key}" value="${val}" />
-							</c:forEach>
-						</c:otherwise>
-					</c:choose>
-				</c:forEach>
+			<input type="hidden" name="articleId" value="${article.id}">
 
-				<c:param name="jsAction" value="WriteReplyList__showDetail" />
-			</c:url>
-			<input type="hidden" name="redirectUrl" value="${redirectUrl}" /> <input
-				type="hidden" name="body" />
+			<c:set var="redirectUrl"
+				value="${Util.getNewUrlRemoved(currentUrl, 'generatedArticleReplyId')}" />
+			<c:set var="redirectUrl"
+				value="${Util.getNewUrl(redirectUrl, 'jsAction', 'WriteReplyList__showDetail')}" />
+				
+			<input type="hidden" name="redirectUrl" value="${redirectUrl}">
+			<input type="hidden" name="body">
 			<div class="form-row">
 				<div class="label">내용</div>
 				<div class="input">
@@ -146,12 +129,14 @@
 </c:if>
 
 <script>
-	function WriteReplyList__showDetail() {
+	function WriteReplyList__showTop() {
 		var top = $('.article-replies-list-box').offset().top;
 		$(window).scrollTop(top);
-
-		var $tr = $('.article-replies-list-box > table > tbody > tr[data-id="' + param.generatedArticleReplyId + '"]');
-
+	}
+	function WriteReplyList__showDetail() {
+		WriteReplyList__showTop();
+		var $tr = $('.article-replies-list-box > table > tbody > tr[data-id="'
+				+ param.generatedArticleReplyId + '"]');
 		$tr.addClass('high');
 		setTimeout(function() {
 			$tr.removeClass('high');
@@ -163,7 +148,6 @@
 .article-replies-list-box>table>tbody>tr.high {
 	background-color: #dfdfdf;
 }
-
 .article-replies-list-box>table>tbody>tr {
 	transition: background-color 1s;
 }
@@ -174,10 +158,10 @@
 <div class="con article-replies-list-box table-box">
 	<table>
 		<colgroup>
-			<col width="100" />
-			<col width="200" />
-			<col />
-			<col width="120" />
+			<col width="100">
+			<col width="200">
+			<col>
+			<col width="120">
 		</colgroup>
 		<thead>
 			<tr>
@@ -197,10 +181,21 @@
 						<div class="toast-editor toast-editor-viewer"></div></td>
 					<td class="text-align-center"><c:if
 							test="${articleReply.extra.deleteAvailable}">
+							<c:set var="afterDeleteReplyRedirectUrl"
+								value="${Util.getNewUrlRemoved(currentUrl, 'generatedArticleReplyId')}" />
+							<c:set var="afterDeleteReplyRedirectUrl"
+								value="${Util.getNewUrlAndEncoded(afterDeleteReplyRedirectUrl, 'jsAction', 'WriteReplyList__showTop')}" />
+
+							<c:set var="afterModifyReplyRedirectUrl"
+								value="${Util.getNewUrlRemoved(currentUrl, 'generatedArticleReplyId')}" />
+							<c:set var="afterModifyReplyRedirectUrl"
+								value="${Util.getNewUrlAndEncoded(afterModifyReplyRedirectUrl, 'jsAction', 'WriteReplyList__showDetail')}" />
+
 							<a onclick="if ( confirm('삭제하시겠습니까?') == false ) return false;"
-								href="./doDeleteReply?id=${articleReply.id}">삭제</a>
+								href="./doDeleteReply?id=${articleReply.id}&redirectUrl=${afterDeleteReplyRedirectUrl}">삭제</a>
 						</c:if> <c:if test="${articleReply.extra.modifyAvailable}">
-							<a href="./modifyReply?id=${articleReply.id}">수정</a>
+							<a
+								href="./modifyReply?id=${articleReply.id}&redirectUrl=${afterModifyReplyRedirectUrl}">수정</a>
 						</c:if></td>
 				</tr>
 			</c:forEach>
