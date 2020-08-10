@@ -156,10 +156,18 @@ public class ArticleService extends Service {
 		return getReplyCheckRsDeleteAvailable(articleReply, actorId);
 	}
 
-	private ArticleReply getArticleReply(int id) {
+	public ArticleReply getArticleReply(int id) {
 		return articleDao.getArticleReply(id);
 	}
 	public int deleteArticleReply(int id) {
 		return articleDao.deleteArticleReply(id);
+	}
+	public Map<String, Object> getReplyCheckRsModifyAvailable(int id, int actorId) {
+		ArticleReply articleReply = getArticleReply(id);
+		
+		return getReplyCheckRsModifyAvailable(articleReply, actorId);
+	}
+	public int modifyArticleReply(int id, String body) {
+		return articleDao.modifyArticleReply(id, body);
 	}
 }
