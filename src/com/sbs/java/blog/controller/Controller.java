@@ -11,6 +11,7 @@ import com.sbs.java.blog.config.Config;
 import com.sbs.java.blog.dto.CateItem;
 import com.sbs.java.blog.dto.Member;
 import com.sbs.java.blog.service.ArticleService;
+import com.sbs.java.blog.service.AttrService;
 import com.sbs.java.blog.service.MailService;
 import com.sbs.java.blog.service.MemberService;
 import com.sbs.java.blog.util.Util;
@@ -21,11 +22,11 @@ public abstract class Controller {
 	protected HttpServletRequest req;
 	protected HttpServletResponse resp;
 	protected HttpSession session;
-
+	
 	protected ArticleService articleService;
 	protected MemberService memberService;
 	protected MailService mailService;
-	
+	protected AttrService attrService;
 	public Controller(Connection dbConn, String actionMethodName, HttpServletRequest req, HttpServletResponse resp) {
 		this.dbConn = dbConn;
 		this.actionMethodName = actionMethodName;
@@ -35,6 +36,7 @@ public abstract class Controller {
 		articleService = new ArticleService(dbConn);
 		mailService = new MailService(Config.gmailId, Config.gmailPw, Config.mailFrom, Config.mailFromName);
 		memberService = new MemberService(dbConn, mailService);
+		attrService = new AttrService(dbConn);
 	}
 
 	public abstract String getControllerName();

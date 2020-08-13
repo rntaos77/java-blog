@@ -9,10 +9,14 @@ public class CateItem extends Dto{
 		
 		this.name = (String) row.get("name");
 	}
+	
+
 	@Override
 	public String toString() {
-		return "Article [name=" + name + ", dto=" + super.toString() + "]";
+		return "CateItem [name=" + name + ", getId()=" + getId() + ", getRegDate()=" + getRegDate()
+				+ ", getUpdateDate()=" + getUpdateDate() + ", getExtra()=" + getExtra() + "]";
 	}
+
 
 	public String getName() {
 		return name;
