@@ -27,33 +27,33 @@ public class ArticleController extends Controller {
 	public String doAction() {
 		switch (actionMethodName) {
 		case "list":
-			return doActionList();
+			return actionList();
 		case "modify":
-			return doActionModify();
+			return actionModify();
 		case "doModifyReply":
-			return doActionDoModifyReply();
+			return actionDoModifyReply();
 		case "modifyReply":
-			return doActionModifyReply();
+			return actionModifyReply();
 		case "detail":
-			return doActionDetail();
+			return actionDetail();
 		case "doWrite":
-			return doActionDoWrite();
+			return actionDoWrite();
 		case "doWriteReply":
-			return doActionDoWriteReply();
+			return actionDoWriteReply();
 		case "doDeleteReply":
-			return doActionDoDeleteReply();
+			return actionDoDeleteReply();
 		case "doDelete":
-			return doActionDoDelete();
+			return actionDoDelete();
 		case "doModify":
-			return doActionDoModify();
+			return actionDoModify();
 		case "write":
-			return doActionWrite();
+			return actionWrite();
 		}
 
 		return "";
 	}
 
-	private String doActionModifyReply() {
+	private String actionModifyReply() {
 		if (Util.empty(req, "id")) {
 			return "html:id를 입력해주세요.";
 		}
@@ -75,7 +75,7 @@ public class ArticleController extends Controller {
 		return "article/modifyReply.jsp";
 	}
 
-	private String doActionDoModifyReply() {
+	private String actionDoModifyReply() {
 		if (Util.empty(req, "id")) {
 			return "html:id를 입력해주세요.";
 		}
@@ -104,7 +104,7 @@ public class ArticleController extends Controller {
 		return "html:<script> alert('" + id + "번 댓글이 수정되었습니다.'); location.replace('" + redirectUri + "'); </script>";
 	}
 
-	private String doActionDoWriteReply() {
+	private String actionDoWriteReply() {
 		if (Util.empty(req, "articleId")) {
 			return "html:articleId를 입력해주세요.";
 		}
@@ -126,11 +126,11 @@ public class ArticleController extends Controller {
 		return "html:<script> alert('" + id + "번 댓글이 작성되었습니다.'); location.replace('" + redirectUri + "'); </script>";
 	}
 
-	private String doActionWrite() {
+	private String actionWrite() {
 		return "article/write.jsp";
 	}
 
-	private String doActionDoModify() {
+	private String actionDoModify() {
 		if (Util.empty(req, "id")) {
 			return "html:id를 입력해주세요.";
 		}
@@ -158,7 +158,7 @@ public class ArticleController extends Controller {
 		return "html:<script> alert('" + id + "번 게시물이 수정되었습니다.'); location.replace('detail?id=" + id + "'); </script>";
 	}
 
-	private String doActionDoDeleteReply() {
+	private String actionDoDeleteReply() {
 		if (Util.empty(req, "id")) {
 			return "html:id를 입력해주세요.";
 		}
@@ -186,7 +186,7 @@ public class ArticleController extends Controller {
 		return "html:<script> alert('" + id + "번 댓글이 삭제되었습니다.'); location.replace('" + redirectUri + "'); </script>";
 	}
 
-	private String doActionDoDelete() {
+	private String actionDoDelete() {
 		if (Util.empty(req, "id")) {
 			return "html:id를 입력해주세요.";
 		}
@@ -210,7 +210,7 @@ public class ArticleController extends Controller {
 		return "html:<script> alert('" + id + "번 게시물이 삭제되었습니다.'); location.replace('list'); </script>";
 	}
 
-	private String doActionDoWrite() {
+	private String actionDoWrite() {
 		String title = req.getParameter("title");
 		String body = req.getParameter("body");
 		int cateItemId = Util.getInt(req, "cateItemId");
@@ -222,7 +222,7 @@ public class ArticleController extends Controller {
 		return "html:<script> alert('" + id + "번 게시물이 생성되었습니다.'); location.replace('list'); </script>";
 	}
 
-	private String doActionDetail() {
+	private String actionDetail() {
 		if (Util.empty(req, "id")) {
 			return "html:id를 입력해주세요.";
 		}
@@ -246,7 +246,7 @@ public class ArticleController extends Controller {
 		return "article/detail.jsp";
 	}
 
-	private String doActionModify() {
+	private String actionModify() {
 		if (Util.empty(req, "id")) {
 			return "html:id를 입력해주세요.";
 		}
@@ -265,7 +265,7 @@ public class ArticleController extends Controller {
 		return "article/modify.jsp";
 	}
 
-	private String doActionList() {
+	private String actionList() {
 		int page = 1;
 
 		if (!Util.empty(req, "page") && Util.isNum(req, "page")) {
